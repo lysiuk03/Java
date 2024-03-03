@@ -12,9 +12,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        //menu();
+        menu();
         //AddProduct();
-        ShowProducts();
+        //ShowProducts();
     }
 
     private static void menu() {

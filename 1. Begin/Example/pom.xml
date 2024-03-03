@@ -28,6 +28,13 @@
             <artifactId>mariadb-java-client</artifactId>
             <version>3.3.2</version>
         </dependency>
+        <!-- Інші залежності -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.32</version> <!-- Поточна версія на момент написання -->
+        </dependency>
     </dependencies>
+
 
 </project>
