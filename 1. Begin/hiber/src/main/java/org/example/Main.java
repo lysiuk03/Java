@@ -2,10 +2,12 @@ package org.example;
 
 import org.example.models.Category;
 import org.example.models.Product;
+import org.example.models.ProductPhoto;
 import org.example.utils.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
@@ -26,6 +28,7 @@ public class Main {
             System.out.println("2.Показати всі");
             System.out.println("3.Змінити");
             System.out.println("4.Видалить");
+            System.out.println("5.Додати продукт з фото");
             System.out.print("->_");
             action=in.nextInt();
             switch(action) {
@@ -45,9 +48,66 @@ public class Main {
                     DeleteCategory();
                     break;
                 }
+                case 5: {
+                    AddProductWithPhotos();
+                    break;
+                }
             }
         }while(action!=0);
     }
+
+    private static void AddProductWithPhotos() {
+        Scanner in = new Scanner(System.in);
+        SessionFactory sf = HibernateUtil.getSessionFactory();
+
+        try (Session context = sf.openSession()) {
+            context.beginTransaction();
+
+            Product product = new Product();
+            System.out.print("Вкажіть назву продукту: ");
+            product.setName(in.nextLine());
+            System.out.print("Вкажіть опис продукту: ");
+            product.setDescription(in.nextLine());
+            System.out.print("Вкажіть ціну продукту: ");
+            product.setPrice(in.nextDouble());
+
+            System.out.print("Вкажіть id категорії продукту: ");
+            int categoryId = in.nextInt();
+            Category category = context.get(Category.class, categoryId);
+            if (category == null) {
+                System.out.println("Категорію з таким id не знайдено.");
+                context.getTransaction().commit();
+                return;
+            }
+
+            product.setCategory(category);
+
+            product.setPhotos(new ArrayList<>());
+
+            context.save(product);
+
+            System.out.print("Скільки фотографій бажаєте додати? ");
+            int numPhotos = in.nextInt();
+            in.nextLine();
+
+            for (int i = 0; i < numPhotos; i++) {
+                ProductPhoto photo = new ProductPhoto();
+                System.out.print("Вкажіть шлях до фотографії " + (i + 1) + ": ");
+                photo.setPhotoPath(in.nextLine());
+
+                photo.setProduct(product);
+                product.getPhotos().add(photo);
+
+                context.save(photo);
+            }
+
+            context.update(product);
+
+            context.getTransaction().commit();
+        }
+    }
+
+
 
     private static void AddCategory() {
         Calendar calendar = Calendar.getInstance();
