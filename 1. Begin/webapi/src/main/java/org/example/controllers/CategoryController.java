@@ -106,35 +106,5 @@ public class CategoryController {
         Page<CategoryItemDTO> result = categories.map(categoryMapper::categoryItemDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
-    @PutMapping(value = "/{categoryId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<CategoryItemDTO> updateCategory(
-            @PathVariable int categoryId,
-            @ModelAttribute CategoryEditDTO model) {
-        var existingCategory = categoryRepository.findById(categoryId).orElse(null);
-        if (existingCategory == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        var updatedCategory = categoryMapper.categoryEditDto(model);
-
-        try {
-            if (model.getFile() != null) {
-                storageService.deleteImage(existingCategory.getImage());
-                String newImageName = storageService.SaveImage(model.getFile(), FileSaveFormat.WEBP);
-                updatedCategory.setImage(newImageName);
-            } else {
-                updatedCategory.setImage(existingCategory.getImage());
-            }
-
-            updatedCategory.setCreationTime(existingCategory.getCreationTime());
-
-            categoryRepository.save(updatedCategory);
-
-            var result = categoryMapper.categoryItemDTO(updatedCategory);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+    
 }
