@@ -1,21 +1,24 @@
-import {Button, Card, Col, Popconfirm, Typography} from "antd";
-import NotImage from '../../assets/imagenot.png';
-import Meta from "antd/es/card/Meta";
-import {DeleteOutlined, EditOutlined} from '@ant-design/icons';
-import {Link} from "react-router-dom";
-import {APP_ENV} from "../../env";
-import {ICategoryItem} from "./types.ts";
+// Імпорт необхідних компонентів та модулів з бібліотек Ant Design та React
+import {Button, Card, Col, Popconfirm, Typography} from "antd";// Компоненти Ant Design для кнопок, карточок, колонок та підтверджень
+import NotImage from '../../assets/imagenot.png';// Зображення для використання, якщо фото категорії відсутнє
+import Meta from "antd/es/card/Meta";// Компонент Ant Design для мета-даних у карточці
+import {DeleteOutlined, EditOutlined} from '@ant-design/icons'; // Іконки Ant Design для видалення та редагування
+import {Link} from "react-router-dom";// Компонент для створення посилань в React
+import {APP_ENV} from "../../env";// Змінні середовища програми
+import {ICategoryItem} from "./types.ts";// Інтерфейс для елементів категорій
 
-const { Title } = Typography;
+const { Title } = Typography;// Деструктуризація компонента Ant Design для заголовків
 
+// Прописання інтерфейсу для пропсів компоненту CategoryCard
 interface ICategoryCardProps {
-    item: ICategoryItem,
-    handleDelete: (id: number) => void
+    item: ICategoryItem,  // Елемент категорії
+    handleDelete: (id: number) => void // Функція видалення категорії за ідентифікатором
 }
 
+// Компонент для відображення карточки категорії
 const CategoryCard: React.FC<ICategoryCardProps> = (props) => {
-    const {item, handleDelete} = props;
-    const {id, name, description, image} = item;
+    const {item, handleDelete} = props; // Деструктуризація пропсів
+    const {id, name, description, image} = item;// Деструктуризація даних категорії
 
     return (
         <>
@@ -62,5 +65,6 @@ const CategoryCard: React.FC<ICategoryCardProps> = (props) => {
         </>
     )
 }
+// Експорт компоненту для використання в інших частинах програми
 
 export default CategoryCard;

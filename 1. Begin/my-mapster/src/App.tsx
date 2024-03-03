@@ -1,13 +1,18 @@
+// Імпорт стилів для компоненту App
 import './App.css'
-import CategoryListPage from "./category/list/CategoryListPage.tsx";
-import {Route, Routes} from "react-router-dom";
-import DefaultLayout from "./containers/default/DefaultLayout.tsx";
-import CategoryCreatePage from "./category/create/CategoryCreatePage.tsx";
-import CategoryEditPage from "./category/edit/CategoryEditPage.tsx";
+// Імпорт компонентів та хуків для роутингу та створення маршрутів
+import CategoryListPage from "./category/list/CategoryListPage.tsx";// Сторінка списку категорій
+import {Route, Routes} from "react-router-dom";// Компоненти для роботи з роутами в React
+import DefaultLayout from "./containers/default/DefaultLayout.tsx";// Компонент лейауту за замовчуванням
+import CategoryCreatePage from "./category/create/CategoryCreatePage.tsx";// Сторінка створення категорії
+import CategoryEditPage from "./category/edit/CategoryEditPage.tsx"; // Сторінка редагування категорії
 
+// Головна компонента App
 function App() {
+    // Відображення компонентів за допомогою роутів в React
     return (
         <>
+            {/* Визначення роутів за допомогою компонента Routes */}
             <Routes>
                 <Route path={"/"} element={<DefaultLayout/>}>
                     <Route index element={<CategoryListPage/>}/>
@@ -20,5 +25,5 @@ function App() {
         </>
     )
 }
-
+// Експорт головної компоненти App для використання в інших частинах програми
 export default App

@@ -1,31 +1,38 @@
-import {useNavigate} from "react-router-dom";
+// Імпорт необхідних функцій та компонентів з бібліотек та модулів
+import {useNavigate} from "react-router-dom"; // Використовуємо хук для навігації в React Router
 import {ICategoryCreate, IUploadedFile} from "./types.ts";
-import {Button, Form, Input, Row, Upload} from "antd";
-import {Link} from "react-router-dom";
-import TextArea from "antd/es/input/TextArea";
-import {UploadChangeParam} from "antd/es/upload";
-import { PlusOutlined } from '@ant-design/icons';
-import http_common from "../../http_common.ts";
+import {Button, Form, Input, Row, Upload} from "antd"; // Імпорт компонентів Ant Design для форм та інтерфейсу
+import {Link} from "react-router-dom"; // Імпорт компонента для створення посилань
+import TextArea from "antd/es/input/TextArea"; // Імпорт компонента для введення тексту з Ant Design
+import {UploadChangeParam} from "antd/es/upload"; // Імпорт типів для зміни в компоненті завантаження файлів
+import { PlusOutlined } from '@ant-design/icons'; // Імпорт іконки для кнопки завантаження фото
+import http_common from "../../http_common.ts"; // Імпорт модуля для HTTP-запитів
 
+
+// Створення компоненту сторінки для створення нової категорії
 const CategoryCreatePage = () => {
+    // Використання хука для навігації
     const navigate = useNavigate();
-
+    // Створення форми з використанням типу ICategoryCreate
     const [form] = Form.useForm<ICategoryCreate>();
-
+    // Обробник подання форми з викликом API для створення нової категорії
     const onHandlerSubmit = async (values: ICategoryCreate) => {
         try {
+            // Виклик API для створення категорії з використанням HTTP POST-запиту
             await http_common.post("/api/categories/create", values, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            // Навігація на головну сторінку після успішного створення категорії
             navigate('/');
         }
         catch(ex) {
+            // Обробка винятків під час невдалого створення категорії
             console.log("Exception create category", ex);
         }
     }
-
+    // Відображення компоненту форми для створення категорії
     return (
         <>
             <h1>Додати категорію</h1>
@@ -105,5 +112,5 @@ const CategoryCreatePage = () => {
         </>
     );
 }
-
+// Експорт компоненту для використання в інших частинах програми
 export default CategoryCreatePage;

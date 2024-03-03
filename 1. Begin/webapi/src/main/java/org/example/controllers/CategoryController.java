@@ -106,5 +106,5 @@ public class CategoryController {
         Page<CategoryItemDTO> result = categories.map(categoryMapper::categoryItemDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    
+
 }

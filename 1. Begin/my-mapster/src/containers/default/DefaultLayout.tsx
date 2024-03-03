@@ -1,14 +1,17 @@
-import {Breadcrumb, Layout, theme} from "antd";
-import DefaultHeader from "./DefaultHeader";
-import {Outlet} from "react-router-dom";
-import DefaultSider from "./DefaultSlider.tsx";
-
+// Імпорт необхідних компонентів та хуків з Ant Design та React
+import {Breadcrumb, Layout, theme} from "antd";// Компоненти для створення breadcrumb, розташування та теми
+import DefaultHeader from "./DefaultHeader";// Компонент хедера
+import {Outlet} from "react-router-dom";// Хук для виведення дочірніх компонентів в роуті
+import DefaultSider from "./DefaultSlider.tsx"; // Компонент бічної панелі
+// Деструктуризація Layout та його складових
 const { Content, Footer} = Layout;
-
+// Компонент лейауту за замовчуванням
 const DefaultLayout = () => {
+    // Деструктуризація значень токенів теми для визначення стилів
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+    // Відображення компоненту
     return (
         <Layout>
             <DefaultHeader/>
@@ -32,5 +35,5 @@ const DefaultLayout = () => {
         </Layout>
     )
 }
-
+// Експорт компоненту  для використання в інших частинах програми
 export default DefaultLayout;
