@@ -30,7 +30,8 @@ const CategoryListPage = () => {
         http_common.get<IGetCategories>("/api/categories/search", {
             params: {
                 ...formParams,
-                page: formParams.page-1 // Сервер працює зі сторінками, починаючи з 0
+                page: formParams.page - 1, // Сервер працює зі сторінками, починаючи з 0
+                searchText: formParams.name // Ваш параметр для пошуку як в назві, так і в описі
             }
         })
             .then(resp => {
