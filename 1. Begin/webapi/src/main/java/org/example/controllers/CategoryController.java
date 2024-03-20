@@ -100,11 +100,21 @@ public class CategoryController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     @GetMapping("/search")
-    public ResponseEntity<Page<CategoryItemDTO>> searchByName(@RequestParam(required = false) String name,
-                                                              Pageable pageable) {
-        Page<CategoryEntity> categories = categoryRepository.findByNameContainingIgnoreCase(name, pageable);
+    public ResponseEntity<Page<CategoryItemDTO>> searchByNameAndDescription(
+            @RequestParam(required = false) String searchText, // Параметр для пошуку як за назвою, так і за описом
+            Pageable pageable
+    ) {
+        Page<CategoryEntity> categories;
+
+        if (searchText != null && !searchText.isEmpty()) {
+            // Виконуємо пошук за назвою та описом і об'єднуємо результати
+            categories = categoryRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(searchText, searchText, pageable);
+        } else {
+            // Якщо параметр пошуку порожній, просто отримуємо всі категорії
+            categories = categoryRepository.findAll(pageable);
+        }
+
         Page<CategoryItemDTO> result = categories.map(categoryMapper::categoryItemDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 }
