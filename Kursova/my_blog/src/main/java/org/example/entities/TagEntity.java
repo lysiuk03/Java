@@ -3,6 +3,8 @@ package org.example.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name="tbl_tags")
@@ -18,4 +20,7 @@ public class TagEntity {
 
     @Column(length = 200)
     private String description;
+
+    @OneToMany(mappedBy="tag")
+    private List<PostTagEntity> postTags;
 }

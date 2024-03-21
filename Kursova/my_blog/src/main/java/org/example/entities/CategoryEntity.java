@@ -3,6 +3,8 @@ package org.example.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name="tbl_categories")
@@ -18,4 +20,7 @@ public class CategoryEntity {
 
     @Column(length = 200)
     private String description;
+
+    @OneToMany(mappedBy="category")
+    private List<PostEntity> posts;
 }
