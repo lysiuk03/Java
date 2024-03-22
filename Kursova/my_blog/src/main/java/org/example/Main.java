@@ -18,6 +18,7 @@ public class Main {
             init.seedCategories();
             init.seedTags();
             init.seedPosts();
+            init.generatePostTags(10);
         };
     }
 }

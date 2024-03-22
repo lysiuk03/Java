@@ -3,9 +3,11 @@ package org.example.services;
 import com.github.javafaker.Faker;
 import org.example.entities.CategoryEntity;
 import org.example.entities.PostEntity;
+import org.example.entities.PostTagEntity;
 import org.example.entities.TagEntity;
 import org.example.repositories.CategoryRepository;
 import org.example.repositories.PostRepository;
+import org.example.repositories.PostTagRepository;
 import org.example.repositories.TagRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +23,16 @@ public class InitializerService {
     private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
     private final PostRepository postRepository;
+    private final PostTagRepository postTagRepository;
 
     private Map<String,String> letters = new HashMap<>();
 
-    public InitializerService(CategoryRepository categoryRepository, TagRepository tagRepository, PostRepository postRepository) {
+    public InitializerService(CategoryRepository categoryRepository, TagRepository tagRepository, PostRepository postRepository,PostTagRepository postTagRepository) {
         faker = new Faker(new Locale("uk"));
         this.categoryRepository = categoryRepository;
         this.tagRepository = tagRepository;
         this.postRepository=postRepository;
+        this.postTagRepository = postTagRepository;
         fillLetters();
     }
 
@@ -96,6 +100,17 @@ public class InitializerService {
             }
         }
     }
+    public void generatePostTags(int count) {
+        var posts = postRepository.findAll();
+        var tags = tagRepository.findAll();
+        for (int i = 0; i < count; i++) {
+            PostTagEntity postTag = new PostTagEntity();
+            postTag.setTag(tags.get(faker.random().nextInt(tags.size())));
+            postTag.setPost(posts.get(faker.random().nextInt(posts.size())));
+            postTagRepository.save(postTag);
+        }
+    }
+
 
     public String DoSlugUrl(String text){
         String slug ="";
