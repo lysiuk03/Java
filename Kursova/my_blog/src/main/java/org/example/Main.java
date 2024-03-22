@@ -16,6 +16,7 @@ public class Main {
     CommandLineRunner runner(InitializerService init) {
         return args -> {
             init.seedCategories();
+            init.seedTags();
         };
     }
 }

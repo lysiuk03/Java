@@ -2,7 +2,9 @@ package org.example.services;
 
 import com.github.javafaker.Faker;
 import org.example.entities.CategoryEntity;
+import org.example.entities.TagEntity;
 import org.example.repositories.CategoryRepository;
+import org.example.repositories.TagRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -13,12 +15,14 @@ import java.util.Map;
 public class InitializerService {
     private final Faker faker;
     private final CategoryRepository categoryRepository;
+    private final TagRepository tagRepository;
 
     private Map<String,String> letters = new HashMap<>();
 
-    public InitializerService(CategoryRepository categoryRepository) {
+    public InitializerService(CategoryRepository categoryRepository, TagRepository tagRepository) {
         faker = new Faker(new Locale("uk"));
         this.categoryRepository = categoryRepository;
+        this.tagRepository = tagRepository;
         fillLetters();
     }
 
@@ -38,6 +42,24 @@ public class InitializerService {
             }
         }
     }
+
+    public void seedTags(){
+        final int count = 10;
+        if(tagRepository.count()<count){
+            for(int i = 0;i<count;i++){
+                TagEntity tag = new TagEntity();
+                String name = faker.hacker().noun();
+                tag.setName(name);
+                String description = faker.hacker().adjective() + " " + faker.hacker().noun();
+                tag.setDescription(description);
+                String slug = "tag "+name+" "+description;
+                slug = String.join("-",slug.split(" "));
+                tag.setUrlSlug(slug);
+                tagRepository.save(tag);
+            }
+        }
+    }
+
 
     public String DoSlugUrl(String text){
         String slug ="";
