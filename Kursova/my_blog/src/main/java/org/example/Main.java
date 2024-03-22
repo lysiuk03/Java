@@ -17,6 +17,7 @@ public class Main {
         return args -> {
             init.seedCategories();
             init.seedTags();
+            init.seedPosts();
         };
     }
 }

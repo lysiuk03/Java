@@ -2,12 +2,16 @@ package org.example.services;
 
 import com.github.javafaker.Faker;
 import org.example.entities.CategoryEntity;
+import org.example.entities.PostEntity;
 import org.example.entities.TagEntity;
 import org.example.repositories.CategoryRepository;
+import org.example.repositories.PostRepository;
 import org.example.repositories.TagRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -16,19 +20,21 @@ public class InitializerService {
     private final Faker faker;
     private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
+    private final PostRepository postRepository;
 
     private Map<String,String> letters = new HashMap<>();
 
-    public InitializerService(CategoryRepository categoryRepository, TagRepository tagRepository) {
+    public InitializerService(CategoryRepository categoryRepository, TagRepository tagRepository, PostRepository postRepository) {
         faker = new Faker(new Locale("uk"));
         this.categoryRepository = categoryRepository;
         this.tagRepository = tagRepository;
+        this.postRepository=postRepository;
         fillLetters();
     }
 
     public void seedCategories(){
         final int count = 10;
-        if(categoryRepository.count()==0){
+        if(categoryRepository.count()<count){
             for(int i = 0;i<count;i++){
                 CategoryEntity category = new CategoryEntity();
                 String name = faker.commerce().department();
@@ -60,6 +66,36 @@ public class InitializerService {
         }
     }
 
+    public void seedPosts(){
+        final int count = 10;
+        List<CategoryEntity> categories = categoryRepository.findAll();
+        if(postRepository.count()<count){
+            for(int i = 0;i<count;i++){
+                PostEntity post = new PostEntity();
+
+                String title = faker.book().title();
+                post.setTitle(title);
+
+                String short_description = faker.lorem().sentence();
+                post.setShortDescription(short_description);
+
+                String description=faker.lorem().paragraph();
+                post.setDescription(description);
+
+                String meta=faker.lorem().paragraph();
+                post.setMeta(meta);
+
+                String slug = "title "+title;
+                slug = String.join("-",slug.split(" "));
+                post.setUrlSlug(slug);
+                boolean published = faker.random().nextBoolean();
+                post.setPublished(published);
+                post.setPostedOn(LocalDateTime.now());
+                post.setCategory(categories.get(faker.random().nextInt(categories.size())));
+                postRepository.save(post);
+            }
+        }
+    }
 
     public String DoSlugUrl(String text){
         String slug ="";
