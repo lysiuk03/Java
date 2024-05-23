@@ -5,7 +5,9 @@ import CategoryListPage from "./category/list/CategoryListPage.tsx";// Стор�
 import {Route, Routes} from "react-router-dom";// Компоненти для роботи з роутами в React
 import DefaultLayout from "./containers/default/DefaultLayout.tsx";// Компонент лейауту за замовчуванням
 import CategoryCreatePage from "./category/create/CategoryCreatePage.tsx";// Сторінка створення категорії
-import CategoryEditPage from "./category/edit/CategoryEditPage.tsx"; // Сторінка редагування категорії
+import CategoryEditPage from "./category/edit/CategoryEditPage.tsx";
+import RegisterPage from "./account/register/register.tsx";
+import LoginPage from "./account/login/login.tsx";
 
 // Головна компонента App
 function App() {
@@ -20,6 +22,8 @@ function App() {
                         <Route path = "create" element={<CategoryCreatePage/>}/>
                         <Route path = "edit/:id" element={<CategoryEditPage/>}/>
                     </Route>
+                    <Route path = "register" element={<RegisterPage/>}/>
+                    <Route path = "login" element={<LoginPage/>}/>
                 </Route>
             </Routes>
         </>
